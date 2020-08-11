@@ -23,7 +23,6 @@ class EventsBloc extends Bloc<EventsEvent, EventsState> {
   Stream<EventsState> mapEventToState(EventsEvent event) async* {
     final currentState = state;
     if (event is Fetch) {
-
       print('get data   ${event.month}');
       try {
         if (currentState is InitEventState) {

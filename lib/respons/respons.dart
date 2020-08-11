@@ -145,7 +145,8 @@ class DataRespons {
       eventsInDay.dateTime = DateTime.now();
       list.add(eventsInDay);
     }
-    sort ? list.sort((a, b) => b.dateTime.day.compareTo(a.dateTime.day))
+    sort
+        ? list.sort((a, b) => b.dateTime.day.compareTo(a.dateTime.day))
         : list.sort((a, b) => a.dateTime.day.compareTo(b.dateTime.day));
 
     List<EventOfMonth> listDynamic = [];
