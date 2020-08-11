@@ -3,47 +3,6 @@
 
 part of table_calendar;
 
-///// Callback exposing currently selected day.
-//typedef void OnDaySelected(DateTime day, List<EventsInDay> events);
-//
-///// Callback exposing currently visible days (first and last of them), as well as current `CalendarFormat`.
-//typedef void OnVisibleDaysChanged(DateTime first, DateTime last, CalendarFormat format);
-//
-///// Callback exposing initially visible days (first and last of them), as well as initial `CalendarFormat`.
-//typedef void OnCalendarCreated(DateTime first, DateTime last, CalendarFormat format);
-//
-///// Signature for reacting to header gestures. Exposes current month and year as a `DateTime` object.
-//typedef void HeaderGestureCallback(DateTime focusedDay);
-//
-///// Builder signature for any text that can be localized and formatted with `DateFormat`.
-//typedef String TextBuilder(DateTime date, dynamic locale);
-//
-///// Signature for enabling days.
-//typedef bool EnabledDayPredicate(DateTime day);
-//
-///// Format to display the `TableCalendar` with.
-//enum CalendarFormat { month, week }
-//
-///// Available animations to update the `CalendarFormat` with.
-//enum FormatAnimation { slide, scale }
-
-/// Available day of week formats. `TableCalendar` will start the week with chosen day.
-/// * `StartingDayOfWeek.monday`: Monday - Sunday
-/// * `StartingDayOfWeek.tuesday`: Tuesday - Monday
-/// * `StartingDayOfWeek.wednesday`: Wednesday - Tuesday
-/// * `StartingDayOfWeek.thursday`: Thursday - Wednesday
-/// * `StartingDayOfWeek.friday`: Friday - Thursday
-/// * `StartingDayOfWeek.saturday`: Saturday - Friday
-/// * `StartingDayOfWeek.sunday`: Sunday - Saturday
-//enum StartingDayOfWeek { monday, tuesday, wednesday, thursday, friday, saturday, sunday }
-//
-//int _getWeekdayNumber(StartingDayOfWeek weekday) {
-//  return StartingDayOfWeek.values.indexOf(weekday) + 1;
-//}
-//
-///// Gestures available to interal `TableCalendar`'s logic.
-//enum AvailableGestures { none, verticalSwipe, horizontalSwipe, all }
-
 enum CalendarStatus { pinWeek, pinmonth, unpin }
 
 /// Highly customizable, feature-packed Flutter Calendar with gestures, animations and multiple formats.
@@ -128,7 +87,6 @@ class TabCalendarCustoms extends StatefulWidget {
   final Map<CalendarFormat, String> availableCalendarFormats;
 
   /// Used to show/hide Header.
-  final bool headerVisible;
 
   /// Function deciding whether given day should be enabled or not.
   /// If `false` is returned, this day will be unavailable.
@@ -166,7 +124,6 @@ class TabCalendarCustoms extends StatefulWidget {
 
   /// Set of Builders for `TableCalendar` to work with.
   final CalendarBuilders builders;
-  double offset = 101;
 
   TabCalendarCustoms({
     Key key,
@@ -193,7 +150,6 @@ class TabCalendarCustoms extends StatefulWidget {
       CalendarFormat.month: 'Month',
       CalendarFormat.week: 'Week',
     },
-    this.headerVisible = true,
     this.enabledDayPredicate,
     this.heightTable,
     this.formatAnimation = FormatAnimation.slide,
@@ -251,7 +207,8 @@ class _TabCalendarCustomsState extends State<TabCalendarCustoms> //  with Single
   void initState() {
     super.initState();
     calendarController1 = CalendarController();
-    scrollController = ScrollController(initialScrollOffset: -130);
+    scrollController =
+        ScrollController(initialScrollOffset: widget.calendarStatus == CalendarStatus.unpin ? -400 : -190);
     thisdateTime = widget.initialSelectedDay ?? DateTime.now();
     keyTopOfList = RectGetter.createGlobalKey();
     widget.calendarController._init(
@@ -346,18 +303,6 @@ class _TabCalendarCustomsState extends State<TabCalendarCustoms> //  with Single
     }
   }
 
-  void _onHeaderTapped() {
-    if (widget.onHeaderTapped != null) {
-      widget.onHeaderTapped(widget.calendarController.focusedDay);
-    }
-  }
-
-  void _onHeaderLongPressed() {
-    if (widget.onHeaderLongPressed != null) {
-      widget.onHeaderLongPressed(widget.calendarController.focusedDay);
-    }
-  }
-
   bool _isDayUnavailable(DateTime day) {
     return (widget.startDay != null && day.isBefore(widget.calendarController._normalizeDate(widget.startDay))) ||
         (widget.endDay != null && day.isAfter(widget.calendarController._normalizeDate(widget.endDay))) ||
@@ -419,13 +364,13 @@ class _TabCalendarCustomsState extends State<TabCalendarCustoms> //  with Single
             onNotification: (ScrollNotification scrollInfo) {
               //count = 0;
               if (scrollInfo is ScrollEndNotification) {
-                if (scrollController.position.pixels < -130 &&
+                if (scrollController.position.pixels < -190 &&
                     scrollController.position.pixels > scrollController.position.minScrollExtent) {
                   count++;
                   if (count == 1) {
                     if (scrollController.position.pixels + getTopOfList() >
                         (scrollController.position.minScrollExtent + getTopOfList()) / 2) {
-                      scrollController.jumpTo(-130);
+                      scrollController.jumpTo(-190);
                     } else
                       scrollController.jumpTo(scrollController.position.minScrollExtent);
                   }

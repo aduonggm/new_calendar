@@ -121,7 +121,6 @@ class CalendarState extends State<Calendars> {
                 ),
                 initialCalendarFormat: CalendarFormat.month,
                 startingDayOfWeek: StartingDayOfWeek.monday,
-                headerVisible: true,
                 events: snapshot.data,
                 onDaySelected: (dateTime, list) {
                   setState(() {

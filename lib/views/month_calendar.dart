@@ -12,12 +12,14 @@ class MonthCalendar extends StatefulWidget {
 
 class MonthCalendarState extends State<MonthCalendar> {
   CalendarController calendarController;
-
   var list = [];
+
+  DateTime date;
 
   @override
   void initState() {
     super.initState();
+    date = DateTime.now();
     list = DataRespons.getGoodDayInMonth(DateTime.now());
     calendarController = new CalendarController();
   }
@@ -36,12 +38,12 @@ class MonthCalendarState extends State<MonthCalendar> {
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),
       ),
-      headerVisible: true,
       calendarStatus: CalendarStatus.unpin,
       onDaySelected: (dateTime, list) {
-        setState(() {
-          this.list = DataRespons.getGoodDayInMonth(dateTime);
-        });
+        if (date.month != dateTime.month)
+          setState(() {
+            this.list = DataRespons.getGoodDayInMonth(dateTime);
+          });
         // calendarController1.setSelectedDay(dateTime);
       },
       calendarController: calendarController,

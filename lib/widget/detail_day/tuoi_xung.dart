@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:calendar/modal/tuoi_xung_model.dart';
+import 'package:flutter/material.dart';
 
 import '../items.dart';
 
@@ -13,6 +14,11 @@ class TuoiXungInDetailDay extends StatelessWidget {
     return Column(
       children: <Widget>[
         Container(
+          height: 4,
+          color: Color(0xffF0F0F0),
+        ),
+        Container(
+          color: Colors.white,
           padding: EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,6 +50,7 @@ class TuoiXungInDetailDay extends StatelessWidget {
           color: Color(0xffF0F0F0),
         ),
         Container(
+          color: Colors.white,
           padding: EdgeInsets.all(10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
